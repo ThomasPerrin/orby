@@ -1,0 +1,182 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.firebase-perf'
+    id 'com.google.firebase.crashlytics'
+}
+
+// Initialize keystoreProperties.
+def keystorePropertiesFile = file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.tomp.orby"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    def getBranchName = { ->
+        try {
+            println "Task Getting Branch Name.."
+
+            def stdout = new ByteArrayOutputStream()
+            exec {
+                commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+                standardOutput = stdout
+            }
+
+            println "Git Current Branch = " + stdout.toString()
+
+            def date = new Date()
+            def formattedDate = date.format('dd/MM-HH:mm')
+            String branch = stdout.toString().split("-")[0] + "-" + stdout.toString().split("-")[1] + "  " + formattedDate
+
+            return branch
+        }
+        catch (Exception e) {
+            println "Exception = " + e.getMessage()
+            return "dev"
+        }
+    }
+
+    flavorDimensions "environnement"
+
+    productFlavors {
+        dev {
+            versionNameSuffix "  ${getBranchName}"
+            applicationIdSuffix ".dev"
+            buildConfigField "String", "ENDPOINT", "\"\""
+            buildConfigField "String", "CLIENT_ID_SSO", "\"\""
+            manifestPlaceholders = [environnement: "dev"]
+            flavorDimensions "environnement"
+        }
+        prod {
+            buildConfigField "String", "ENDPOINT", "\"\""
+            buildConfigField "String", "CLIENT_ID_SSO", "\"\""
+            manifestPlaceholders = [environnement: "prod"]
+            flavorDimensions "environnement"
+        }
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+
+    kapt {
+        generateStubs = true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError true
+    }
+
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    // UI General
+    implementation "androidx.recyclerview:recyclerview:1.2.0"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    // MaterialDialog
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:input:3.3.0'
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
+    implementation 'com.afollestad.material-dialogs:datetime:3.2.1'
+
+    // RX
+    implementation "io.reactivex.rxjava2:rxjava:2.2.12"
+    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.32"
+    implementation 'org.jetbrains.anko:anko-common:0.9'
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    kapt "androidx.lifecycle:lifecycle-compiler:2.3.1"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+
+    // Room
+    implementation "androidx.room:room-runtime:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+    implementation "androidx.room:room-rxjava2:2.3.0"
+    testImplementation "androidx.room:room-testing:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+
+    //Retrofit2 + OkHttp3
+    implementation "com.squareup.retrofit2:retrofit:2.6.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.2"
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.2"
+
+    // Firebase - Crashlytics
+    implementation 'com.google.firebase:firebase-core:18.0.3'
+    implementation 'com.google.firebase:firebase-crashlytics:17.4.2'
+    implementation 'com.google.firebase:firebase-perf:19.1.1'
+    implementation 'com.google.firebase:firebase-analytics:18.0.3'
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.3'
+    implementation 'com.google.firebase:firebase-config-ktx:20.0.4'
+
+    // Navigation
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.3.5'
+    implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
+
+    // LocalDate threeten
+    implementation "com.jakewharton.threetenabp:threetenabp:1.2.4"
+
+    //Test
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation "org.assertj:assertj-core:3.8.0"
+    testImplementation "org.mockito:mockito-core:2.19.0"
+    testImplementation "org.threeten:threetenbp:1.4.4"
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+
+}
