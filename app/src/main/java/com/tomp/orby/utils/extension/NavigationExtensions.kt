@@ -1,6 +1,5 @@
 package com.tomp.orby.utils.extension
 
-import com.veolia.prism.R
 import android.content.Intent
 import android.util.SparseArray
 import androidx.core.util.forEach
@@ -11,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tomp.orby.R
 
 /**
  * Manages the various graphs needed for a [BottomNavigationView].

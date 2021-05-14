@@ -153,19 +153,21 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.2"
 
     // Firebase - Crashlytics
-    implementation 'com.google.firebase:firebase-core:18.0.3'
-    implementation 'com.google.firebase:firebase-crashlytics:17.4.2'
-    implementation 'com.google.firebase:firebase-perf:19.1.1'
-    implementation 'com.google.firebase:firebase-analytics:18.0.3'
-    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.3'
-    implementation 'com.google.firebase:firebase-config-ktx:20.0.4'
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-perf'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database'
 
     // Navigation
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-runtime-ktx:2.3.5'
-    implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
+    implementation 'androidx.paging:paging-runtime-ktx:3.0.0'
 
     // LocalDate threeten
     implementation "com.jakewharton.threetenabp:threetenabp:1.2.4"

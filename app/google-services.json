@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "252830384667",
+    "project_id": "orby-db1fb",
+    "storage_bucket": "orby-db1fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252830384667:android:9287c627aa2297a313aebe",
+        "android_client_info": {
+          "package_name": "com.tomp.orby.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252830384667-mnif2rg20ptir7jsnbb93vflb03gk5u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoJcdW3kXug5-CHB20wHZ4-Ks7YCusVMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252830384667-mnif2rg20ptir7jsnbb93vflb03gk5u2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
